@@ -44,16 +44,30 @@ pip install -r requirements.txt
 - **schedule**: Task scheduling.
 - **tkinter**: GUI support (pre-installed with Python).
 
-### 3. Save the Script
 
+## Another Method is
 ```bash
-# Linux/Mac:
-touch instagram_scraper.py
-# Windows:
-echo. > instagram_scraper.py
-```
+# Navigate to directory
+cd "/Users/sadmansamee/Documents/Manual Library/tools/instagram_scrapper/"
 
----
+# Remove old environment
+rm -rf instagram_scraper_env
+
+# Use official Python (adjust version to match your download)
+/Library/Frameworks/Python.framework/Versions/3.11/bin/python3 -m venv instagram_scraper_env
+
+# Activate
+source instagram_scraper_env/bin/activate
+
+# Install dependencies
+pip install -r requirements.txt  # Or pip install instaloader pandas tqdm requests cryptography schedule
+
+# Test tkinter
+python -c "import tkinter; print('tkinter is available')"
+
+# Run with GUI
+python3 instagram_scraper.py --gui
+```
 
 ## Running the Script
 
