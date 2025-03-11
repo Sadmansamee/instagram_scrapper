@@ -1,139 +1,138 @@
-# Instagram Follower Scraper Guide
+# Instagram Follower Scraper - Installation & Usage Guide
 
-This guide explains how to set up and use the Instagram Follower Scraper script.
+This guide provides step-by-step instructions to install and run the Instagram Follower Scraper in both CLI and GUI modes.
 
-## Installing Dependencies
+---
 
-First, you'll need to install the required Python packages:
+## Prerequisites
+
+- **Python 3.8+**: [Download here](https://www.python.org/downloads/)
+- **Git** (optional): [Install here](https://git-scm.com/)
+
+---
+
+## Installation
+
+### 1. Create a Virtual Environment (Recommended)
 
 ```bash
-pip install instaloader pandas
+python -m venv instagram_scraper_env
+# Activate the virtual environment
+# Linux/Mac:
+source instagram_scraper_env/bin/activate
+# Windows:
+instagram_scraper_env\Scripts\activate
 ```
 
-These are the main dependencies needed by the script:
-- `instaloader`: For interacting with Instagram's data
-- `pandas`: For data processing and CSV file output
+### 2. Install Required Libraries
+
+```bash
+pip install instaloader pandas tqdm requests cryptography schedule
+```
+
+#### Installed Libraries & Their Uses:
+- **instaloader**: Instagram API wrapper.
+- **pandas**: Data handling and manipulation.
+- **tqdm**: CLI progress bar.
+- **requests**: Proxy validation.
+- **cryptography**: Password encryption.
+- **schedule**: Task scheduling.
+- **tkinter**: GUI support (pre-installed with Python).
+
+### 3. Save the Script
+
+```bash
+# Linux/Mac:
+touch instagram_scraper.py
+# Windows:
+echo. > instagram_scraper.py
+```
+
+---
 
 ## Running the Script
 
-The script is designed to scrape follower data from an Instagram account. Here are the basic commands to run it:
+### CLI Mode
 
-### Basic Usage
-
+#### 1. Basic Usage
 ```bash
-python script_name.py USERNAME
+python instagram_scraper.py https://instagram.com/username --new
 ```
 
-Replace `script_name.py` with the name of the file where you saved the code, and `USERNAME` with the Instagram username whose followers you want to scrape.
-
-### Advanced Usage Options
-
-The script supports several optional parameters:
-
+#### 2. With Login
 ```bash
-python script_name.py USERNAME [OPTIONS]
+python instagram_scraper.py https://instagram.com/username --login-user YOUR_USERNAME --login-pass YOUR_PASSWORD --new
 ```
 
-
-```
-python instagram_scraper.py username_to_scrape --login-user your_username --login-pass your_password
-```
-
-Usage Examples:
-
-Basic usage:
-```
-instagram_scraper.py target_username
+#### 3. Multi-Account Scraping
+```bash
+python instagram_scraper.py https://instagram.com/user1 https://instagram.com/user2 --new
 ```
 
-With authentication (recommended for better results):
-
-```
-instagram_scraper.py target_username --login-user your_username --login-pass your_password --session-file session.json
-```
-
-Resume a previous run:
-
-```
-instagram_scraper.py target_username
+#### 4. Filters
+```bash
+python instagram_scraper.py https://instagram.com/username --min-followers 1000 --business-only --verified-only --location "New York" --new
 ```
 
-Start fresh, ignoring previous checkpoint:
-
-```
-instagram_scraper.py target_username --new
-```
-
-Customize rate limiting (for more aggressive or cautious scraping):
-
-```
-instagram_scraper.py target_username --delay-min 2.5 --delay-max 6.0
+#### 5. Scheduled Run
+```bash
+python instagram_scraper.py https://instagram.com/username --schedule 24 --new
 ```
 
-Limit the number of followers:
+---
 
+### GUI Mode
+
+#### 1. Launch GUI
+```bash
+python instagram_scraper.py --gui
 ```
-instagram_scraper.py target_username --max 500
+
+#### 2. Steps in GUI:
+1. **Input Settings**: Enter Instagram URLs, login credentials, max followers, and optionally load a config file.
+2. **Proxy Settings**: Add proxies and set min/max request delays.
+3. **Filters**: Set minimum followers, toggle business/non-business/verified, and enter a location filter.
+4. **Output Settings**: Choose format (CSV/JSON/SQLite), file path, enable dry run, and select columns.
+5. **Start Scraping**: Click "Start" to begin scraping.
+   - Use "Pause", "Resume", "Stop", or "Reset" as needed.
+   - View live stats, progress, and logs within the window.
+
+#### 3. Example with Pre-filled Values
+```bash
+python instagram_scraper.py https://instagram.com/username --gui --login-user YOUR_USERNAME --max 100
 ```
 
-Available options:
+---
 
-- `--output FILENAME`: Specify the output CSV filename (default: followers_data.csv)
-- `--checkpoint FILENAME`: Specify a checkpoint file for resuming interrupted scraping
-- `--max NUMBER`: Set maximum number of followers to scrape
-- `--login-user USERNAME`: Your Instagram username for login (recommended for better results)
-- `--login-pass PASSWORD`: Your Instagram password
-- `--session-file FILENAME`: Session file to use/save for login
-- `--delay-min SECONDS`: Minimum delay between requests (default: 1.5 seconds)
-- `--delay-max SECONDS`: Maximum delay between requests (default: 4.0 seconds)
-- `--new`: Start a new scrape, ignoring existing checkpoint
+## Output Files
 
-### Example Commands
+- **followers_data.csv / .json** - Scraped data with selected columns.
+- **followers.db** - SQLite database (if selected as output format).
+- **username_checkpoint.json** - Progress checkpoint.
+- **username_cache.json.gz** - Compressed cached follower data.
+- **username_scraper.log** - Logs and analytics.
 
-1. **Basic scraping:**
-   ```bash
-   python instagram_follower_scraper.py target_username
-   ```
+---
 
-2. **With login credentials (recommended for better access):**
-   ```bash
-   python instagram_follower_scraper.py target_username --login-user your_username --login-pass your_password
-   ```
+## Tips
 
-3. **Save to a specific output file:**
-   ```bash
-   python instagram_follower_scraper.py target_username --output my_results.csv
-   ```
+- **CLI**: Pause execution with `Ctrl + C`; resume with the same command.
+- **GUI**: Use control buttons to pause/resume/stop; closing the window stops execution.
+- **Logs**: Check logs for detailed analytics, such as follower segments.
+- **Configuration Encryption**: Set `SCRAPER_KEY` environment variable for encryption.
+  ```bash
+  export SCRAPER_KEY="your_key"
+  ```
+- **Load a Config File in GUI**: Pre-fill settings for easier setup.
 
-4. **Limit the number of followers scraped:**
-   ```bash
-   python instagram_follower_scraper.py target_username --max 500
-   ```
-
-5. **Resume a previous scraping session:**
-   ```bash
-   python instagram_follower_scraper.py target_username --checkpoint target_username_checkpoint.json
-   ```
-
-6. **Using a saved session file (more privacy-friendly than entering password):**
-   ```bash
-   python instagram_follower_scraper.py target_username --login-user your_username --session-file your_session.txt
-   ```
-
-## Important Notes
-
-1. **Rate limiting**: The script includes measures to avoid detection, but Instagram has strict rate limits. Using longer delays (`--delay-min` and `--delay-max`) reduces the risk of being rate-limited.
-
-2. **Login recommended**: While the script can work without login, you'll get much better results by logging in with your Instagram credentials.
-
-3. **Checkpoints**: The script automatically creates checkpoints, so you can resume scraping if it's interrupted.
-
-4. **Output format**: The script outputs a CSV file with specific columns designed for potential marketing use, including email, phone, name, location, and demographic data that it attempts to extract from profiles.
-
-5. **Ethical usage**: Make sure to use this script responsibly and in accordance with Instagram's Terms of Service and applicable privacy laws.
+---
 
 ## Troubleshooting
 
-- If you encounter a "Too many requests" error, the script will automatically pause and retry.
-- If the script stops unexpectedly, you can resume using the checkpoint file.
-- Login issues are common if your account has two-factor authentication enabled. Consider using a session file in that case.
+- **"ModuleNotFoundError"**: Run `pip install` for missing dependencies.
+- **GUI Not Showing**: Ensure `tkinter` is available (pre-installed with Python).
+- **Proxy Issues**: Verify proxy format (e.g., `http://proxy:port`).
+
+---
+
+🚀 **Happy Scraping!** If you need assistance, refer to script comments or contact the author.
