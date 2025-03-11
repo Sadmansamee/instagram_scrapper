@@ -1,0 +1,6 @@
+instaloader>=4.10.3
+pandas>=2.0.0
+tqdm>=4.66.1
+requests>=2.31.0
+cryptography>=42.0.0
+schedule>=1.2.0

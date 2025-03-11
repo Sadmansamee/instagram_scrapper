@@ -30,6 +30,11 @@ instagram_scraper_env\Scripts\activate
 pip install instaloader pandas tqdm requests cryptography schedule
 ```
 
+```bash
+pip install -r requirements.txt
+```
+
+
 #### Installed Libraries & Their Uses:
 - **instaloader**: Instagram API wrapper.
 - **pandas**: Data handling and manipulation.
