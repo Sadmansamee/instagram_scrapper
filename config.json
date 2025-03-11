@@ -1,0 +1,5 @@
+{
+  "proxies": ["http://proxy1:port", "http://proxy2:port"],
+  "login_user": "your_username",
+  "login_pass": "your_password"
+}
