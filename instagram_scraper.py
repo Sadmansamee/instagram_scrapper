@@ -1,3 +1,6 @@
+import sys
+print(sys.executable)
+
 import instaloader
 import pandas as pd
 import time
